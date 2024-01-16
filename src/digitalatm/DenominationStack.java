@@ -2,10 +2,10 @@ package digitalatm;
 
 //Denomination Node Class.
 class DenominationNode {
-    int data;
+    String data;
     DenominationNode next;
     
-    public DenominationNode(int data) {
+    public DenominationNode(String data) {
         this.data = data;
         this.next = null;
     }
@@ -19,10 +19,45 @@ public class DenominationStack {
         this.top = null;
     }
     
-    public void push(int value) {
-        DenominationNode newNode = new DenominationNode(value);
+    public void push(String data) {
+        DenominationNode newNode = new DenominationNode(data);
         newNode.next = top;
         top = newNode;
+    }
+    
+    public String pop() {
+        if (isEmpty()) {
+            return null;
+        }
+
+        if (top.next == null) {
+            String poppedValue = top.data;
+            top = null;
+            return poppedValue;
+        }
+
+        DenominationNode current = top;
+        while (current.next.next != null) {
+            current = current.next;
+        }
+
+        String poppedValue = current.next.data;
+        current.next = null;
+        return poppedValue;
+    }
+    
+    public int getSize() {
+        int count = 0;
+        DenominationNode current = top;
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+        return count;
+    }
+    
+    public boolean isEmpty() {
+        return top == null;
     }
 }
 

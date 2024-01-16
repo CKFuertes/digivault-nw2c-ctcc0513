@@ -976,27 +976,31 @@ public class DigitalATM {
     
     //Withdraw Denomination Function.
     public static void withdrawDenominationDialog() {
-          DenominationStack denominationStack = new DenominationStack();
-          denomination = withdrawAmount;
-          
-          for (int value : denominationsValue) {
-              while (denomination >= value) {
-                int count = denomination / value;
-                denomination %= value;
-                denominationStack.push(count);
-                
-                if (value == 1 || value == 10) {
-                    denominationType = "coin";
-                } else {
-                    denominationType = "peso bill";
-                }
-                
-                denominationDialogBox = denominationDialogBox.concat(count + " piece(s) of " + value + " " + denominationType + ".\n");
+        DenominationStack denominationStack = new DenominationStack();
+        denomination = withdrawAmount;
+
+        for (int value : denominationsValue) {
+            while (denomination >= value) {
+              int count = denomination / value;
+              denomination %= value;
+
+              if (value == 1 || value == 10) {
+                  denominationType = "coin";
+              } else {
+                  denominationType = "peso bill";
               }
-          }
-          
-          JOptionPane.showMessageDialog(null, "Withdraw Success!\nYou will receive:\n" + denominationDialogBox + "Withdraw Amount: P" + withdrawAmount + "\nUpdated Balance: P" + loginNode.balance);
-          denominationDialogBox = "";
+
+              String denominationData = count + " piece(s) of " + value + " " + denominationType + ".\n";
+              denominationStack.push(denominationData);
+            }
+        }
+        
+        while (!denominationStack.isEmpty()) {
+            denominationDialogBox += denominationStack.pop();
+        }
+
+        JOptionPane.showMessageDialog(null, "Withdraw Success!\nYou will receive:\n" + denominationDialogBox + "Withdraw Amount: P" + withdrawAmount + "\nUpdated Balance: P" + loginNode.balance);
+        denominationDialogBox = "";
     }
     
     //Bring up warning dialog depending on the invalid account creation input.
