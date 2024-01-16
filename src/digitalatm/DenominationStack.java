@@ -1,5 +1,6 @@
 package digitalatm;
 
+//Denomination Node Class.
 class DenominationNode {
     int data;
     DenominationNode next;
@@ -10,6 +11,7 @@ class DenominationNode {
     }
 }
 
+//Denomination Stack.
 public class DenominationStack {
     private DenominationNode top;
     

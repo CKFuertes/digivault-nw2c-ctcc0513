@@ -1,17 +1,17 @@
 package digitalatm;
 
 public class AccountNode {
-    //Declare variables. - Nami
+    //Declare variables.
     public String phoneNum, userName, pin;
     public int balance;
     public AccountNode next;
     
-    //Empty Constructor. - Nami
+    //Empty Constructor.
     public AccountNode() {
         
     }
     
-    //Constructor with parameters. - Nami
+    //Constructor with parameters.
     public AccountNode(String phoneNum, String userName, String pin, int balance) {
         this.phoneNum = phoneNum;
         this.userName = userName;
