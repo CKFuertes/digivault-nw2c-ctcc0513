@@ -25,8 +25,9 @@ public class DigitalATM {
     static boolean phoneNumStatus, nameStatus, pinStatus, initialDepositStatus, depositAmountStatus, withdrawAmountStatus;
     static String name, pin, balanceStr, phoneNum, accountCreateDialogBox = "", denominationDialogBox = "", phoneNumLogin, pinLogin, depositAmountStr, withdrawAmountStr;
     static int balance, depositAmount, withdrawAmount;
-    static int denomination, thousandBill, fiveHundredBill, oneHundredBill, fiftyBill, twentyBill, tenCoin, coin;
-    static String adminUsername = "admin", adminPassword = "adminPass";
+    static int denomination;
+    static String adminUsername = "admin", adminPassword = "adminPass", denominationType;
+    static int[] denominationsValue = {1000, 500, 100, 50, 20, 10, 1};
     
     //Main Method
     public static void main(String[] args) {
@@ -902,6 +903,7 @@ public class DigitalATM {
             phoneNumLogin = phoneNumLoginTextField.getText();
             pinLogin = pinLoginPasswordField.getText();
             
+            //If login is admin, proceed to admin.
             if (phoneNumLogin.equals(adminUsername) && pinLogin.equals(adminPassword)) {
                 DefaultTableModel model = (DefaultTableModel) adminMenuTable.getModel();
                 model.setRowCount(0);
@@ -909,7 +911,7 @@ public class DigitalATM {
                 AccountNode currNode = head;
                 
                 while (currNode.next != null) {
-                     model.addRow(new String[]{currNode.phoneNum, currNode.userName, currNode.pin, "P" + currNode.balance});
+                    model.addRow(new String[]{currNode.phoneNum, currNode.userName, currNode.pin, "P" + currNode.balance});
                     currNode = currNode.next;
                 }
                 
@@ -974,51 +976,27 @@ public class DigitalATM {
     
     //Withdraw Denomination Function.
     public static void withdrawDenominationDialog() {
-        denomination = withdrawAmount;
-        //1000 bill denomination.
-        while (denomination >= 1000) {
-            thousandBill = denomination / 1000;
-            denomination %= 1000;
-            denominationDialogBox = denominationDialogBox.concat(thousandBill + " piece(s) of 1000 peso bill.\n");
-        }
-        //500 bill denomination.
-        while (denomination >= 500) {
-            fiveHundredBill = denomination / 500;
-            denomination %= 500;
-            denominationDialogBox = denominationDialogBox.concat(fiveHundredBill + " piece(s) of 500 peso bill.\n");
-        }
-        //100 bill denomination.
-        while (denomination >= 100) {
-            oneHundredBill = denomination / 100;
-            denomination %= 100;
-            denominationDialogBox = denominationDialogBox.concat(oneHundredBill + " piece(s) of 100 peso bill.\n");
-        }
-        //50 bill denomination.
-        while (denomination >= 50) {
-            fiftyBill = denomination / 50;
-            denomination %= 50;
-            denominationDialogBox = denominationDialogBox.concat(fiftyBill + " piece(s) of 50 peso bill.\n");
-        }
-        //20 bill denomination.
-        while (denomination >= 20) {
-            twentyBill = denomination / 20;
-            denomination %= 20;
-            denominationDialogBox = denominationDialogBox.concat(twentyBill + " piece(s) of 20 peso bill.\n");
-        }
-        //10 coin denomination.
-        while (denomination >= 10) {
-            tenCoin = denomination / 10;
-            denomination %= 10;
-            denominationDialogBox = denominationDialogBox.concat(tenCoin + " piece(s) of 10 peso coin.\n");
-        }
-        //1 coin denomination.
-        while (denomination >= 1) {
-            coin = denomination / 1;
-            denomination %= 1;
-            denominationDialogBox = denominationDialogBox.concat(coin + " piece(s) of 1 peso coin.\n");
-        }
-        JOptionPane.showMessageDialog(null, "Withdraw Success!\nYou will receive:\n" + denominationDialogBox + "Withdraw Amount: P" + withdrawAmount + "\nUpdated Balance: P" + loginNode.balance);
-        denominationDialogBox = "";
+          DenominationStack denominationStack = new DenominationStack();
+          denomination = withdrawAmount;
+          
+          for (int value : denominationsValue) {
+              while (denomination >= value) {
+                int count = denomination / value;
+                denomination %= value;
+                denominationStack.push(count);
+                
+                if (value == 1 || value == 10) {
+                    denominationType = "coin";
+                } else {
+                    denominationType = "peso bill";
+                }
+                
+                denominationDialogBox = denominationDialogBox.concat(count + " piece(s) of " + value + " " + denominationType + ".\n");
+              }
+          }
+          
+          JOptionPane.showMessageDialog(null, "Withdraw Success!\nYou will receive:\n" + denominationDialogBox + "Withdraw Amount: P" + withdrawAmount + "\nUpdated Balance: P" + loginNode.balance);
+          denominationDialogBox = "";
     }
     
     //Bring up warning dialog depending on the invalid account creation input.
