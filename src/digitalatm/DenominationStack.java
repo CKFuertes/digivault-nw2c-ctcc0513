@@ -19,43 +19,21 @@ public class DenominationStack {
         this.top = null;
     }
     
+    //Push Method.
     public void push(String data) {
         DenominationNode newNode = new DenominationNode(data);
         newNode.next = top;
         top = newNode;
     }
     
+    //Pop Method.
     public String pop() {
-        if (isEmpty()) {
-            return null;
-        }
-
-        if (top.next == null) {
-            String poppedValue = top.data;
-            top = null;
-            return poppedValue;
-        }
-
-        DenominationNode current = top;
-        while (current.next.next != null) {
-            current = current.next;
-        }
-
-        String poppedValue = current.next.data;
-        current.next = null;
+        String poppedValue = top.data;
+        top = top.next;
         return poppedValue;
     }
     
-    public int getSize() {
-        int count = 0;
-        DenominationNode current = top;
-        while (current != null) {
-            count++;
-            current = current.next;
-        }
-        return count;
-    }
-    
+    //Checks if stack is empty.
     public boolean isEmpty() {
         return top == null;
     }

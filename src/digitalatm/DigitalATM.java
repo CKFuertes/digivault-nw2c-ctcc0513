@@ -996,7 +996,7 @@ public class DigitalATM {
         }
         
         while (!denominationStack.isEmpty()) {
-            denominationDialogBox += denominationStack.pop();
+            denominationDialogBox = denominationStack.pop() + denominationDialogBox;
         }
 
         JOptionPane.showMessageDialog(null, "Withdraw Success!\nYou will receive:\n" + denominationDialogBox + "Withdraw Amount: P" + withdrawAmount + "\nUpdated Balance: P" + loginNode.balance);
