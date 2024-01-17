@@ -5,11 +5,10 @@ implementation of ATMs with digital currency.
 
 INSTALLATION:
 
-  • To run the application, users can download the runnable jar file, DigiVault.jar, and run it in their desktop.
+  • To run the application, users can copy and paste the source code of this project, and replicate each java file.
 
   • For curious users, the source code of this project can be viewd inside the src/digitalatm folder. 
     
-  • If there is problem in running the jar file, check your JDK version and make sure it is updated.
 
 FEATURES:
 
