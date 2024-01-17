@@ -8,6 +8,8 @@ INSTALLATION:
   • To run the application, users can download the runnable jar file, DigiVault.jar, and run it in their desktop.
 
   • For curious users, the source code of this project can be viewd inside the src/digitalatm folder. 
+    
+  • If there is problem in running the jar file, check your JDK version and make sure it is updated.
 
 FEATURES:
 
@@ -46,7 +48,7 @@ NOTES:
   • To access the admin page, the default username is "admin" and default password is "adminPass."
 
   • For account creation, Phone Number must be unique, numerical and 11-digits long, Name must not contain spaces and only contain alphabetical values, PIN must be numerical and 4-digits long, and Initial Deposit must be numerical, whole money, and at least P500.
-
+  
 CREDITS:
 
   • Cherwen Kirk M. Fuertes
