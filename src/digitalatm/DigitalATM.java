@@ -259,43 +259,52 @@ public class DigitalATM {
         
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = adminMenuTable.getSelectedRow();
-                int posDel = 0;
-                if (selectedRow != -1) {
-                    String phoneNumDel = (String) adminMenuTable.getValueAt(selectedRow, 0);
-                    
-                    AccountNode currNode = head;
-                    while (currNode.next != null) {
-                        if (phoneNumDel.equals(currNode.phoneNum)) {
-                            break;
-                        }
-                        currNode = currNode.next;
-                        posDel++;
-                    }
-                    
-                    //Identify position and update its links.
-                    if (posDel == 0) {
-                        //If posDel is 0, set newSecondNode as the new head.
-                        head = head.next;
-                    }
-                    else {
-                        //Create a node that will serve as the node before the position and set it by default to head.
-                        AccountNode beforeNode = head;
+                int choice = showConfirmationDialog();
+                
+                if (choice == JOptionPane.YES_OPTION) {
+                    // User clicked "Yes", perform account deletion logic here
+                    int selectedRow = adminMenuTable.getSelectedRow();
+                    int posDel = 0;
+                    if (selectedRow != -1) {
+                        String phoneNumDel = (String) adminMenuTable.getValueAt(selectedRow, 0);
 
-                        //Traveres linked list until it gets to the pos.
-                        for (int i=1; i != posDel; i++) {
-                            beforeNode = beforeNode.next;
+                        AccountNode currNode = head;
+                        while (currNode.next != null) {
+                            if (phoneNumDel.equals(currNode.phoneNum)) {
+                                break;
+                            }
+                            currNode = currNode.next;
+                            posDel++;
                         }
 
-                        //Create a node that will serve as the node after the position and set it as the node next to beforeNode.
-                        AccountNode afterNode = beforeNode.next;
+                        //Identify position and update its links.
+                        if (posDel == 0) {
+                            //If posDel is 0, set newSecondNode as the new head.
+                            head = head.next;
+                        }
+                        else {
+                            //Create a node that will serve as the node before the position and set it by default to head.
+                            AccountNode beforeNode = head;
 
-                        //Set the link of beforeNode to the node afte the afterNode.
-                        beforeNode.next = afterNode.next;
+                            //Traveres linked list until it gets to the pos.
+                            for (int i=1; i != posDel; i++) {
+                                beforeNode = beforeNode.next;
+                            }
+
+                            //Create a node that will serve as the node after the position and set it as the node next to beforeNode.
+                            AccountNode afterNode = beforeNode.next;
+
+                            //Set the link of beforeNode to the node afte the afterNode.
+                            beforeNode.next = afterNode.next;
+                        }
+                        tableModel.removeRow(selectedRow);
                     }
-                    tableModel.removeRow(selectedRow);
+                    JOptionPane.showMessageDialog(null, "Account deleted succesfully.");
+                } else {
+                    // User clicked "No" or closed the dialog, handle accordingly
+                    JOptionPane.showMessageDialog(null, "Account deletion cancelled.");
                 }
-            } 
+            }
         });
         
         //Adding the component to their corresponding parent component.
@@ -1061,6 +1070,16 @@ public class DigitalATM {
         AccountNode newAccNode = new AccountNode(phoneNum, userName, pin, balance);
         newAccNode.next = head;
         head = newAccNode;
-    } 
+    }
+
+    //Promt user for confirmation.  
+    private static int showConfirmationDialog() {
+        String message = "Confirm account deletion?";
+        String title = "Account Deletion";
+        int optionType = JOptionPane.YES_NO_OPTION;
+        int messageType = JOptionPane.QUESTION_MESSAGE;
+
+        return JOptionPane.showConfirmDialog(null, message, title, optionType, messageType);
+    }
 }
 
